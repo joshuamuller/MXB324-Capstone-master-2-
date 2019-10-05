@@ -61,7 +61,8 @@ else
 end
 
 if river == true
-    % put river condition here
+    [D_H] = River(h, Z, K_R, dz);
+    q_w(1) = K_R*D_H(1);
 else
     q_w(1) = 0; % no river
 end
@@ -90,8 +91,11 @@ for i = 2:Nz-1
     q_s(i) = -1/2 * k_s(i) * Kzz_s(i) * (H(i) - H(i+1))/dz;
     q_e(i) = -1/2 * k_e(i) * Kxx_e(i) * (H(i+Nz) - H(i))/dx;
     
+    % River condition
     if Z(i) > 75 && river == true
-        % put river condition here;
+        [D_H] = River(h, Z, K_R, dz);
+        q_w(i) = K_R*D_H(i);
+        
     else
         q_w(i) = 0; % rock
     end
